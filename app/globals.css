@@ -1,0 +1,39 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #0b0b0b;
+
+  --greeno-primary: #03a63c;
+  --greeno-footer: #012340;
+  --greeno-section: #f4fbf6;
+  --greeno-muted-foreground: #6b7280;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-primary: var(--greeno-primary);
+  --color-footer: var(--greeno-footer);
+  --color-section: var(--greeno-section);
+  --color-muted-foreground: var(--greeno-muted-foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+.padding-x {
+  @apply px-4 sm:px-10 lg:px-20 xl:px-[144px];
+}
+
+.padding-y {
+  @apply py-8 sm:py-12 lg:py-16 xl:py-[80px];
+}
