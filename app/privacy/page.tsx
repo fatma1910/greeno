@@ -1,125 +1,52 @@
-"use client";
+import { Footer } from "@/components/landing/Footer";
+import { Header } from "@/components/landing/Header";
+import { PolicyShell } from "@/components/policies/PolicyShell";
 
-import { useState } from "react";
-
-const sections = [
-  {
-    id: "terms",
-    title: "Terms of Service",
-    content: (
-      <>
-        <h2 className="text-primary font-semibold text-lg mb-4">
-          Sales & Pricing Policy
-        </h2>
-
-        <p className="text-gray-600 mb-4">
-          Lorem ipsum dolor sit amet consectetur.
-        </p>
-
-        <ul className="list-disc pl-5 text-gray-600 mb-6 space-y-1">
-          <li>Lorem ipsum dolor sit amet consectetur.</li>
-          <li>Lorem ipsum dolor sit amet consectetur.</li>
-          <li>Lorem ipsum dolor sit amet consectetur.</li>
-          <li>Lorem ipsum dolor sit amet consectetur.</li>
-        </ul>
-
-        {[...Array(4)].map((_, i) => (
-          <div key={i} className="mb-6">
-            <h3 className="font-semibold mb-2">
-              Lorem ipsum dolor sit amet consectetur.
-            </h3>
-            <p className="text-gray-600 text-sm leading-relaxed">
-              Lorem ipsum dolor sit amet consectetur. Sed cras ante ultrices
-              vestibulum tortor non sapien. Suspendisse dictum dolor congue
-              augue curabitur eget a tincidunt.
-            </p>
-          </div>
-        ))}
-      </>
-    ),
-  },
-  {
-    id: "privacy",
-    title: "Privacy Policy",
-    content: (
-      <>
-        <h2 className="font-semibold mb-4">Privacy Policy</h2>
-        <p className="text-gray-600 leading-relaxed">
-          This section explains how we collect, use, and protect your data.
-          Lorem ipsum dolor sit amet consectetur adipisicing elit.
-        </p>
-      </>
-    ),
-  },
-  {
-    id: "support",
-    title: "Contact Support",
-    content: (
-      <>
-        <h2 className="font-semibold mb-4">Contact Support</h2>
-        <p className="text-gray-600">
-          Need help? Reach out to our support team anytime.
-        </p>
-      </>
-    ),
-  },
-];
-
-export default function PolicyPage() {
-  const [active, setActive] = useState("terms");
-
-  const activeSection = sections.find((s) => s.id === active);
-
+export default function PrivacyPage() {
   return (
-    <section className="padding-x padding-y max-w-7xl mx-auto">
-      <div className="grid grid-cols-1 lg:grid-cols-[260px_1fr] gap-10">
-        
-        {/* ================= Sidebar ================= */}
-        <aside className="hidden lg:block">
-          <div className="border rounded-xl overflow-hidden">
-            {sections.map((section) => (
-              <button
-                key={section.id}
-                onClick={() => setActive(section.id)}
-                className={`
-                  w-full text-left px-4 py-3 text-sm
-                  flex items-center justify-between
-                  border-b last:border-b-0
-                  transition
-                  ${
-                    active === section.id
-                      ? "bg-gray-100 font-semibold"
-                      : "hover:bg-gray-50"
-                  }
-                `}
-              >
-                {section.title}
-                <span>›</span>
-              </button>
-            ))}
-          </div>
-        </aside>
+    <div className="flex flex-1 flex-col bg-white text-foreground">
+      <Header />
+      <main className="flex-1">
+        <PolicyShell
+          active="privacy"
+          title="Privacy Policy"
+          subtitle="Learn what we collect, how we use it, and the choices you have."
+        >
+          <section className="space-y-3">
+            <h2 className="text-xl font-semibold text-foreground sm:text-2xl">
+              Information We Collect
+            </h2>
+            <ul className="list-disc space-y-2 pl-5 text-sm text-muted-foreground sm:text-base">
+              <li>Account details like name, email, and phone number.</li>
+              <li>Order information and delivery preferences.</li>
+              <li>Device and usage data to improve performance.</li>
+            </ul>
+          </section>
 
-        {/* ================= Mobile Filter ================= */}
-        <div className="lg:hidden">
-          <select
-            value={active}
-            onChange={(e) => setActive(e.target.value)}
-            className="w-full border rounded-md p-3"
-          >
-            {sections.map((section) => (
-              <option key={section.id} value={section.id}>
-                {section.title}
-              </option>
-            ))}
-          </select>
-        </div>
+          <section className="space-y-3">
+            <h2 className="text-xl font-semibold text-foreground sm:text-2xl">
+              How We Use Your Information
+            </h2>
+            <p className="text-sm leading-6 text-muted-foreground sm:text-base">
+              We use your information to process orders, provide customer
+              support, personalize your experience, and keep the platform safe.
+            </p>
+          </section>
 
-        {/* ================= Content ================= */}
-        <main className="bg-white">
-          {activeSection?.content}
-        </main>
-      </div>
-    </section>
+          <section className="space-y-3">
+            <h2 className="text-xl font-semibold text-foreground sm:text-2xl">
+              Your Choices
+            </h2>
+            <ul className="list-disc space-y-2 pl-5 text-sm text-muted-foreground sm:text-base">
+              <li>Update your profile details from your account settings.</li>
+              <li>Opt out of marketing communications at any time.</li>
+              <li>Request access or deletion of your data.</li>
+            </ul>
+          </section>
+        </PolicyShell>
+      </main>
+      <Footer />
+    </div>
   );
 }
+

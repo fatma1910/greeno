@@ -1,18 +1,19 @@
 import Image from "next/image";
+import Link from "next/link";
 
 import { AppStoreBadges } from "./AppStoreBadges";
 
 const quickLinks = [
-  { label: "Features", href: "#features" },
-  { label: "How It Works", href: "#how-it-works" },
-  { label: "Vendors", href: "#vendors" },
-  { label: "Reviews", href: "#reviews" },
+  { label: "Features", href: "/#features" },
+  { label: "How It Works", href: "/#how-it-works" },
+  { label: "Vendors", href: "/#vendors" },
+  { label: "Reviews", href: "/#reviews" },
 ];
 
 const supportLinks = [
-  { label: "Terms of Service", href: "#" },
-  { label: "Privacy Policy", href: "#" },
-  { label: "Contact Support", href: "#" },
+  { label: "Terms of Service", href: "/terms" },
+  { label: "Privacy Policy", href: "/privacy" },
+  { label: "Contact Support", href: "/contact-support" },
 ];
 
 function SocialIcon({
@@ -93,9 +94,9 @@ export function Footer() {
             <ul className="mt-4 space-y-3 text-sm text-white/70">
               {quickLinks.map((l) => (
                 <li key={l.label}>
-                  <a className="hover:text-white" href={l.href}>
+                  <Link className="hover:text-white" href={l.href}>
                     {l.label}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -106,9 +107,9 @@ export function Footer() {
             <ul className="mt-4 space-y-3 text-sm text-white/70">
               {supportLinks.map((l) => (
                 <li key={l.label}>
-                  <a className="hover:text-white" href={l.href}>
+                  <Link className="hover:text-white" href={l.href}>
                     {l.label}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>

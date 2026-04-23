@@ -1,16 +1,18 @@
 "use client";
 
-
 import { motion, Variants } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect, useMemo, useState } from "react";
 import { FiCheckCircle } from "react-icons/fi";
 import { CiDeliveryTruck } from "react-icons/ci";
 import { FiUsers } from "react-icons/fi";
 
-
-
-const images = ["/assets/hero/phone-1.svg", "/assets/hero/phone-2.svg", "/assets/hero/phone-3.svg"];
+const images = [
+  "/assets/hero/phone-1.svg",
+  "/assets/hero/phone-2.svg",
+  "/assets/hero/phone-3.svg",
+];
 
 const hero = [
   {
@@ -26,8 +28,7 @@ const hero = [
 
     icon: FiUsers,
   },
-]
-
+];
 
 const textVariants: Variants = {
   hidden: { x: -200, opacity: 0 },
@@ -56,21 +57,66 @@ const imagesWrapperVariants: Variants = {
   },
 };
 
-const imageVariants: Variants = {
-  spread: (i: number) => ({
-    x: i === 0 ? -260 : i === 2 ? 260 : 0,
-    transition: { delay: 1.6, duration: 0.6, ease: "easeOut" },
-  }),
-  rotate: (i: number) => ({
-    rotate: i === 0 ? -6 : i === 2 ? 6 : 0,
-    y: i === 1 ? -20 : 0,
-    transition: { delay: 2.3, duration: 0.4, ease: "easeOut" },
-  }),
-};
-
 /* ================== COMPONENT ================== */
 
 export default function Hero() {
+  const [spreadDistance, setSpreadDistance] = useState(260);
+  const [tiltDeg, setTiltDeg] = useState(6);
+  const [middleLift, setMiddleLift] = useState(-20);
+  const [imgScale, setImgScale] = useState(1);
+  const [baseImgYOffset, setBaseImgYOffset] = useState(18);
+
+  useEffect(() => {
+    const update = () => {
+      const width = window.innerWidth;
+      if (width >= 1024) {
+        setSpreadDistance(200);
+        setTiltDeg(6);
+        setMiddleLift(-20);
+        setImgScale(0.95);
+        setBaseImgYOffset(0);
+        return;
+      }
+      if (width >= 640) {
+        setSpreadDistance(160);
+        setTiltDeg(5);
+        setMiddleLift(-16);
+        setImgScale(0.9);
+        setBaseImgYOffset(8);
+        return;
+      }
+      setSpreadDistance(110);
+      setTiltDeg(4);
+      setMiddleLift(-12);
+      setImgScale(0.6);
+      setBaseImgYOffset(150);
+    };
+
+    update();
+    window.addEventListener("resize", update, { passive: true });
+    return () => window.removeEventListener("resize", update);
+  }, []);
+
+  const imageVariants = useMemo<Variants>(
+    () => ({
+      initial: () => ({
+        x: 0,
+        rotate: 0,
+        y: baseImgYOffset,
+      }),
+      spread: (i: number) => ({
+        x: i === 0 ? -spreadDistance : i === 2 ? spreadDistance : 0,
+        transition: { delay: 1.6, duration: 0.6, ease: "easeOut" },
+      }),
+      rotate: (i: number) => ({
+        rotate: i === 0 ? -tiltDeg : i === 2 ? tiltDeg : 0,
+        y: baseImgYOffset + (i === 1 ? middleLift : 0),
+        transition: { delay: 2.3, duration: 0.4, ease: "easeOut" },
+      }),
+    }),
+    [baseImgYOffset, middleLift, spreadDistance, tiltDeg],
+  );
+
   return (
     <section
       className="
@@ -80,11 +126,14 @@ export default function Hero() {
         lg:flex-row 
         items-center 
         justify-between 
-        gap-12 
-        min-h-screen 
+        gap-10 
+        sm:gap-16
+        min-h-screen
+        
         overflow-hidden 
         px-4 sm:px-10 lg:px-20 
         padding-y
+        
       "
     >
       {/* Background */}
@@ -92,14 +141,14 @@ export default function Hero() {
         variants={bgVariants}
         initial="hidden"
         animate="visible"
-        className="absolute -bottom-3 left-0 w-screen"
+        className="absolute -top-6 -bottom-3 left-0 w-screen"
       >
         <Image
           src="/assets/hero/bg.svg"
           alt="bg"
           width={500}
           height={500}
-          className="w-screen h-[200px] lg:h-full object-cover"
+          className="h-[160px] w-screen object-cover sm:h-[200px] lg:h-full"
         />
       </motion.div>
 
@@ -113,11 +162,9 @@ export default function Hero() {
         animate="visible"
         className="
           relative 
-          w-full 
-          flex-1 
           space-y-6 
           lg:space-y-8 
-          max-w-142 
+          max-w-[500px] 
           text-center 
           lg:text-left
         "
@@ -131,11 +178,11 @@ export default function Hero() {
           Discover nurseries near you, compare options, and order plants in minutes.
         </p>
 
-        <div className="flex items-center justify-center lg:justify-start gap-2">
-          <Link href="/" className="bg-black py-2 px-3 rounded-md">
+        <div className="flex flex-wrap items-center justify-center gap-2 lg:justify-start">
+          <Link href="/" className="rounded-md bg-black px-3 py-2">
             <Image src="/assets/hero/app.svg" alt="App Store" width={120} height={31} />
           </Link>
-          <Link href="/" className="bg-black py-2 px-3 rounded-md">
+          <Link href="/" className="rounded-md bg-black px-3 py-2">
             <Image src="/assets/hero/play.svg" alt="Play Store" width={120} height={31} />
           </Link>
         </div>
@@ -157,24 +204,36 @@ export default function Hero() {
         animate="visible"
         className="
           relative 
-          w-full 
-          h-[300px] 
-          sm:h-[400px] 
+          w-full
+          
+          h-[260px] 
+          min-[420px]:h-[300px]
+          sm:h-[380px] 
           lg:h-full 
           flex 
           items-center 
           justify-center 
-          flex-1
+         
+          
         "
       >
         {images.map((src, i) => (
-          <motion.img
+           <motion.img
             key={src}
             src={src}
+            alt={`preview ${i}`}
             custom={i}
             variants={imageVariants}
+            initial="initial"
             animate={["spread", "rotate"]}
-            className="absolute w-40 sm:w-48 lg:w-56"
+            style={{ scale: imgScale }}
+            className="
+              absolute 
+              w-24 
+              sm:w-32 
+              md:w-36 
+              lg:w-32
+            "
           />
         ))}
       </motion.div>
