@@ -64,7 +64,17 @@ export default function Hero() {
   const [tiltDeg, setTiltDeg] = useState(6);
   const [middleLift, setMiddleLift] = useState(-20);
   const [imgScale, setImgScale] = useState(1);
-  const [baseImgYOffset, setBaseImgYOffset] = useState(18);
+  const getInitialYOffset = () => {
+  if (typeof window === "undefined") return 0; 
+
+  const width = window.innerWidth;
+  if (width >= 1024) return 0;
+  if (width >= 640) return 250;
+  return 250;
+};
+
+const [baseImgYOffset, setBaseImgYOffset] = useState(getInitialYOffset);
+  // const [baseImgYOffset, setBaseImgYOffset] = useState(100);
 
   useEffect(() => {
     const update = () => {
@@ -82,14 +92,14 @@ export default function Hero() {
         setTiltDeg(5);
         setMiddleLift(-16);
         setImgScale(0.9);
-        setBaseImgYOffset(8);
+        setBaseImgYOffset(250);
         return;
       }
       setSpreadDistance(110);
       setTiltDeg(4);
       setMiddleLift(-12);
       setImgScale(0.6);
-      setBaseImgYOffset(150);
+      setBaseImgYOffset(250);
     };
 
     update();
@@ -98,24 +108,24 @@ export default function Hero() {
   }, []);
 
   const imageVariants = useMemo<Variants>(
-    () => ({
-      initial: () => ({
-        x: 0,
-        rotate: 0,
-        y: baseImgYOffset,
-      }),
-      spread: (i: number) => ({
-        x: i === 0 ? -spreadDistance : i === 2 ? spreadDistance : 0,
-        transition: { delay: 1.6, duration: 0.6, ease: "easeOut" },
-      }),
-      rotate: (i: number) => ({
-        rotate: i === 0 ? -tiltDeg : i === 2 ? tiltDeg : 0,
-        y: baseImgYOffset + (i === 1 ? middleLift : 0),
-        transition: { delay: 2.3, duration: 0.4, ease: "easeOut" },
-      }),
+  () => ({
+    initial: () => ({
+      x: 0,
+      rotate: 0,
+      y: baseImgYOffset === 0 ? 0 : baseImgYOffset,
     }),
-    [baseImgYOffset, middleLift, spreadDistance, tiltDeg],
-  );
+    spread: (i: number) => ({
+      x: i === 0 ? -spreadDistance : i === 2 ? spreadDistance : 0,
+      transition: { delay: 1.6, duration: 0.6, ease: "easeOut" },
+    }),
+    rotate: (i: number) => ({
+      rotate: i === 0 ? -tiltDeg : i === 2 ? tiltDeg : 0,
+      y: baseImgYOffset + (i === 1 ? middleLift : 0),
+      transition: { delay: 2.3, duration: 0.4, ease: "easeOut" },
+    }),
+  }),
+  [baseImgYOffset, middleLift, spreadDistance, tiltDeg],
+);
 
   return (
     <section
@@ -129,7 +139,6 @@ export default function Hero() {
         gap-10 
         sm:gap-16
         min-h-screen
-        
         overflow-hidden 
         px-4 sm:px-10 lg:px-20 
         padding-y
@@ -205,7 +214,6 @@ export default function Hero() {
         className="
           relative 
           w-full
-          
           h-[260px] 
           min-[420px]:h-[300px]
           sm:h-[380px] 

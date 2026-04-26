@@ -75,9 +75,9 @@ export function VendorCTA() {
             <Image
               src="/assets/vendor.png"
               alt="Vendor"
-              fill
-              sizes="(min-width: 1024px) 50vw, 100vw"
-              className="object-cover"
+              width={500}
+              height={500}
+              className="object-contain"
             />
           </div>
         </div>
